@@ -1,0 +1,63 @@
+{
+  "aah_version": "0.1",
+  "artifact": {
+    "id": "aah_tickets_d4c3b2a1",
+    "type": "structured/plan",
+    "title": "Feature Tickets: Competitor Parity",
+    "summary": "5 feature tickets based on competitor analysis",
+    "created_at": "2026-02-12T09:30:00Z"
+  },
+  "source": {
+    "agent_id": "pm-agent",
+    "agent_name": "PM Agent",
+    "agent_role": "pm",
+    "framework": "clawdbot",
+    "session_id": "ses_abc123",
+    "task_id": "ART-457",
+    "model": "claude-sonnet-4"
+  },
+  "content": {
+    "media_type": "application/json",
+    "body": {
+      "tickets": [
+        {
+          "title": "Add waitlist management",
+          "priority": "high",
+          "estimate": "3 days",
+          "rationale": "All competitors offer this"
+        },
+        {
+          "title": "Implement table status view",
+          "priority": "medium",
+          "estimate": "2 days",
+          "rationale": "OpenTable's key differentiator"
+        },
+        {
+          "title": "Add SMS notifications",
+          "priority": "medium",
+          "estimate": "1 day",
+          "rationale": "Expected by users"
+        }
+      ],
+      "total_estimate": "6 days"
+    },
+    "size_bytes": 412,
+    "token_count": 95
+  },
+  "lifecycle": {
+    "retention": "permanent",
+    "visibility": "team",
+    "status": "approved",
+    "tags": ["feature-planning", "planseats", "q1-2026"]
+  },
+  "handoff": {
+    "parent_artifact_ids": ["aah_7f3b2a1c-9d4e-4f5a-8b6c-1e2d3f4a5b6c"],
+    "target_role": "developer",
+    "expects_response": true,
+    "priority": "high",
+    "context": {
+      "sprint": "2026-Q1-W3",
+      "blocking": false
+    }
+  }
+}

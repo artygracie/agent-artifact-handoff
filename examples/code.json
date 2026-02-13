@@ -1,0 +1,35 @@
+{
+  "aah_version": "0.1",
+  "artifact": {
+    "id": "aah_code_f8e2a1b3",
+    "type": "code/typescript",
+    "title": "ArtifactUploader component",
+    "created_at": "2026-02-11T23:45:00Z"
+  },
+  "source": {
+    "agent_id": "dev-agent",
+    "agent_name": "Developer Agent",
+    "agent_role": "developer",
+    "framework": "clawdbot",
+    "task_id": "ART-789",
+    "model": "claude-sonnet-4"
+  },
+  "content": {
+    "media_type": "text/typescript",
+    "body": "import React, { useState } from 'react';\n\ninterface Props {\n  onUpload: (artifact: AAHEnvelope) => void;\n  projectId?: string;\n}\n\nexport function ArtifactUploader({ onUpload, projectId }: Props) {\n  const [uploading, setUploading] = useState(false);\n\n  const handleSubmit = async (file: File) => {\n    setUploading(true);\n    try {\n      const content = await file.text();\n      const envelope = createAAHEnvelope({\n        type: 'document/markdown',\n        title: file.name,\n        content,\n        projectId,\n      });\n      await onUpload(envelope);\n    } finally {\n      setUploading(false);\n    }\n  };\n\n  return (\n    <div className=\"upload-zone\">\n      {/* Upload UI */}\n    </div>\n  );\n}",
+    "size_bytes": 724,
+    "token_count": 198
+  },
+  "lifecycle": {
+    "retention": "7d",
+    "status": "review"
+  },
+  "handoff": {
+    "target_role": "qa",
+    "expects_response": true,
+    "parent_artifact_ids": ["aah_spec_456"],
+    "context": {
+      "pr_url": "https://github.com/example/repo/pull/123"
+    }
+  }
+}

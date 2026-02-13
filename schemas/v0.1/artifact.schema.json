@@ -1,0 +1,232 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/artygracie/agent-artifact-handoff/schemas/v0.1/artifact.schema.json",
+  "title": "AAH Artifact Envelope",
+  "description": "Agent Artifact Handoff (AAH) envelope format v0.1",
+  "type": "object",
+  "required": ["aah_version", "artifact", "source", "content"],
+  "properties": {
+    "aah_version": {
+      "type": "string",
+      "const": "0.1",
+      "description": "AAH specification version"
+    },
+    "artifact": {
+      "type": "object",
+      "description": "Core artifact identification",
+      "required": ["id", "type", "created_at"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (recommend UUID or prefixed ID)"
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^[a-z]+/[a-z0-9-]+$",
+          "description": "Artifact type in category/subtype format"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Brief description (max 500 chars)"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1,
+          "description": "Version number (1-indexed)"
+        },
+        "version_id": {
+          "type": "string",
+          "description": "Unique ID for this specific version"
+        },
+        "previous_version_id": {
+          "type": "string",
+          "description": "ID of the previous version"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp (ISO 8601)"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last modification timestamp (ISO 8601)"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "description": "Provenance information",
+      "required": ["agent_id"],
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "description": "Identifier for the agent"
+        },
+        "agent_name": {
+          "type": "string",
+          "description": "Human-readable agent name"
+        },
+        "agent_role": {
+          "type": "string",
+          "description": "Agent's role (e.g., researcher, developer)"
+        },
+        "framework": {
+          "type": "string",
+          "description": "Agent framework used"
+        },
+        "framework_version": {
+          "type": "string",
+          "description": "Framework version"
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Session/run identifier"
+        },
+        "task_id": {
+          "type": "string",
+          "description": "Task or ticket identifier"
+        },
+        "task_description": {
+          "type": "string",
+          "description": "What the agent was trying to accomplish"
+        },
+        "model": {
+          "type": "string",
+          "description": "LLM model used"
+        },
+        "organization_id": {
+          "type": "string",
+          "description": "Org identifier for multi-tenant systems"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "description": "The actual artifact content",
+      "required": ["media_type"],
+      "properties": {
+        "media_type": {
+          "type": "string",
+          "description": "MIME type of content"
+        },
+        "encoding": {
+          "type": "string",
+          "default": "utf-8",
+          "description": "Character encoding"
+        },
+        "body": {
+          "type": ["string", "object"],
+          "description": "Inline content (for small artifacts)"
+        },
+        "body_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to fetch content (for large artifacts)"
+        },
+        "body_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "SHA-256 hash of content"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Content size in bytes"
+        },
+        "token_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Estimated token count"
+        }
+      },
+      "anyOf": [
+        { "required": ["body"] },
+        { "required": ["body_url"] }
+      ]
+    },
+    "lifecycle": {
+      "type": "object",
+      "description": "Artifact lifecycle management",
+      "properties": {
+        "retention": {
+          "type": "string",
+          "enum": ["ephemeral", "7d", "30d", "90d", "permanent"],
+          "description": "Retention policy"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Explicit expiration timestamp"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["private", "team", "organization", "public"],
+          "description": "Access level"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "review", "approved", "superseded", "archived"],
+          "description": "Artifact status"
+        },
+        "superseded_by": {
+          "type": "string",
+          "description": "ID of artifact that replaces this one"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Freeform tags for categorization"
+        }
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "description": "Information for agent-to-agent handoffs",
+      "properties": {
+        "target_agent": {
+          "type": "string",
+          "description": "Intended recipient agent ID"
+        },
+        "target_role": {
+          "type": "string",
+          "description": "Intended recipient role"
+        },
+        "expects_response": {
+          "type": "boolean",
+          "description": "Whether a response artifact is expected"
+        },
+        "response_deadline": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Deadline for response"
+        },
+        "parent_artifact_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of artifacts this one derives from"
+        },
+        "context": {
+          "type": "object",
+          "description": "Additional context for recipient agent"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "urgent"],
+          "description": "Priority level"
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Framework-specific or custom extensions (namespaced)",
+      "additionalProperties": true
+    }
+  }
+}

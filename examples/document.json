@@ -1,0 +1,41 @@
+{
+  "aah_version": "0.1",
+  "artifact": {
+    "id": "aah_7f3b2a1c-9d4e-4f5a-8b6c-1e2d3f4a5b6c",
+    "type": "document/markdown",
+    "title": "Competitor Analysis: Table Management Software",
+    "summary": "Analysis of 5 major competitors in the restaurant table management space",
+    "created_at": "2026-02-11T23:10:28Z"
+  },
+  "source": {
+    "agent_id": "research-agent",
+    "agent_name": "Research Agent",
+    "agent_role": "researcher",
+    "framework": "clawdbot",
+    "framework_version": "1.2.3",
+    "session_id": "ses_abc123",
+    "task_id": "ART-456",
+    "task_description": "Research competitor table management features",
+    "model": "claude-sonnet-4"
+  },
+  "content": {
+    "media_type": "text/markdown",
+    "encoding": "utf-8",
+    "body": "# Competitor Analysis: Table Management Software\n\n## Executive Summary\n\nWe analyzed 5 major competitors in the restaurant table management space...\n\n## Competitors\n\n### 1. OpenTable\n- **Strengths**: Brand recognition, large network\n- **Weaknesses**: High fees, complex onboarding\n\n### 2. Resy\n- **Strengths**: Modern UI, premium positioning\n- **Weaknesses**: Limited to urban markets\n\n## Recommendations\n\nFocus on the underserved SMB segment with simpler pricing.",
+    "size_bytes": 512,
+    "token_count": 142
+  },
+  "lifecycle": {
+    "retention": "permanent",
+    "visibility": "team",
+    "status": "approved",
+    "tags": ["competitor-research", "planseats", "q1-2026"]
+  },
+  "handoff": {
+    "target_role": "pm",
+    "expects_response": true,
+    "context": {
+      "next_step": "Create feature tickets based on findings"
+    }
+  }
+}
