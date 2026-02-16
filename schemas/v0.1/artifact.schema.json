@@ -1,4 +1,4 @@
-{
+Can{
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/artygracie/agent-artifact-handoff/schemas/v0.1/artifact.schema.json",
   "title": "AAH Artifact Envelope",

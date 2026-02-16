@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - JSON Schema for validation
+- **HITL Decisions Extension** (`proposals/HITL-DECISIONS.md`)
+  - New artifact type: `decision/request` — Structured decision requests from agents to humans
+  - New artifact type: `decision/response` — Human responses with granular approvals
+  - Decision types: `approval`, `choice`, `multi_choice`, `text`, `number`, `date`
+  - Per-decision approve/reject with comments for audit trail
+  - Blocking task tracking
+  - Deadline and escalation support
+  - JSON Schemas: `decision-request.schema.json`, `decision-response.schema.json`
 
 ### Changed
 - Nothing yet
