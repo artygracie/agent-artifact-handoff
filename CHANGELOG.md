@@ -8,18 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- JSON Schema for validation
-- **HITL Decisions Extension** (`proposals/HITL-DECISIONS.md`)
-  - New artifact type: `decision/request` — Structured decision requests from agents to humans
-  - New artifact type: `decision/response` — Human responses with granular approvals
-  - Decision types: `approval`, `choice`, `multi_choice`, `text`, `number`, `date`
-  - Per-decision approve/reject with comments for audit trail
-  - Blocking task tracking
-  - Deadline and escalation support
-  - JSON Schemas: `decision-request.schema.json`, `decision-response.schema.json`
+- Nothing yet
 
 ### Changed
 - Nothing yet
+
+## [0.2.0] - 2026-02-18
+
+### Added
+- **Sectioned Artifacts** — Multi-agent collaborative documents
+  - New artifact type: `document/sectioned`
+  - New `sections` array for multiple named sections
+  - Each section has its own `agent_id`, `version`, timestamps
+  - `section_update` envelope for partial updates
+  - Section-level version history
+- **Initiative Grouping**
+  - New `artifact.initiative` field for grouping related artifacts
+  - Enables `client.initiative()` SDK pattern
+- **New Artifact Types**
+  - `structured/experiment` — Experiment tracking documents
+  - `structured/feature` — Feature development tracking
+- **JSON Schema**
+  - `schemas/section.schema.json` — Section validation
+
+### Changed
+- Spec version bumped to `0.2.0`
+- `lifecycle.status` values expanded: added `active`, `needs_approval`
+- Added backward compatibility section
+- Added example artifacts appendix
+
+### Proposals Accepted
+- `proposals/SECTIONED-ARTIFACTS.md` — Full sectioned artifacts proposal
 
 ## [0.1.0-draft] - 2026-02-11
 
@@ -32,6 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Artifact type taxonomy (`document/*`, `code/*`, `data/*`, `image/*`, `structured/*`)
 - Versioning fields (`version`, `version_id`, `previous_version_id`)
 - Content deduplication support via `body_hash`
+- **HITL Decisions Extension** (`proposals/HITL-DECISIONS.md`)
+  - Decision types: `approval`, `choice`, `multi_choice`, `text`, `number`, `date`
+  - Per-decision approve/reject with comments
+  - Deadline and escalation support
 
 ### Security
 - Defined authentication/authorization recommendations
@@ -44,4 +67,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Status |
 |---------|------|--------|
-| 0.1.0-draft | 2026-02-11 | Current |
+| 0.2.0 | 2026-02-18 | **Current** |
+| 0.1.0-draft | 2026-02-11 | Superseded |
