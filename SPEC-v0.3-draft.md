@@ -117,20 +117,35 @@ Content within sections MAY reference task sections using the following syntax:
 
 ```
 {{task:<section_id>}}
+{{task:<artifact_id>:<section_id>}}
 ```
 
 ### 3.1 Syntax
 
+**Same-artifact reference:**
+```
+{{task:<section_id>}}
+```
 - `<section_id>` MUST match a section with `type: "task"` in the same artifact
+
+**Cross-artifact reference:**
+```
+{{task:<artifact_id>:<section_id>}}
+```
+- `<artifact_id>` is the target artifact's ID
+- `<section_id>` is the task section within that artifact
+- Enables referencing tasks across related artifacts
+
+**Rules:**
 - References are case-sensitive
 - References MAY appear anywhere in markdown content
+- Invalid references SHOULD be rendered as plain text or a "not found" indicator
 
-### 3.2 Example
+### 3.2 Examples
 
+**Same-artifact:**
 ```markdown
 ## Tier 2 Features
-
-The following features are prioritized for Q2:
 
 ### RSVP Tracking
 {{task:task-rsvp-tracking}}
@@ -139,12 +154,26 @@ The following features are prioritized for Q2:
 {{task:task-realtime-collab}}
 ```
 
+**Cross-artifact:**
+```markdown
+## Dependencies
+
+This feature depends on:
+- {{task:aah_infrastructure_001:task-auth-system}}
+- {{task:aah_infrastructure_001:task-database-migration}}
+```
+
 ### 3.3 Rendering Guidance
 
 Implementations SHOULD render task references in a way that shows:
 - Task heading
 - Current status
 - A way to navigate to the full task
+
+For cross-artifact references, implementations MAY:
+- Fetch the referenced artifact to display current status
+- Show a link to the external artifact
+- Cache task metadata for performance
 
 The specific visual treatment is implementation-defined.
 
@@ -289,9 +318,11 @@ else:
 
 ---
 
-## Review Questions
+## Design Decisions
 
-1. Should `priority` be an integer (1/2/3) or string ("high"/"medium"/"low")?
-2. Should task references support cross-artifact linking? `{{task:artifact_id:section_id}}`
-3. Should we add `event_id` for external system linkage, or leave that to extensions?
-4. Should approval workflow be a separate sub-object or flat fields?
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| Priority format | Integer (1/2/3) | Simpler sorting, universal |
+| Cross-artifact refs | Yes, `{{task:artifact:section}}` | Enables dependency tracking |
+| event_id field | Extensions only | Keep spec minimal, use `extensions.if.event_id` |
+| Approval fields | Flat | Simpler queries, consistent with other fields |
