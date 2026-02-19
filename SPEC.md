@@ -1,9 +1,9 @@
 # Agent Artifact Handoff (AAH) Specification
 
-**Version:** 0.2.0  
+**Version:** 0.3.0  
 **Status:** Active  
 **Authors:** Gracie Redfern, Crouton  
-**Date:** 2026-02-18
+**Date:** 2026-02-19
 
 ---
 
@@ -34,6 +34,9 @@ AAH addresses these problems with a minimal, extensible specification.
 - **Framework**: Software that orchestrates agent execution (e.g., Clawdbot, CrewAI, AutoGen)
 - **Section**: A named portion of a sectioned artifact, owned by a specific agent *(v0.2)*
 - **Initiative**: A logical grouping for related artifacts (e.g., "free-trial-removal") *(v0.2)*
+- **Section Type**: Semantic category of a section (overview, research, spec, roadmap, task, decision) *(v0.3)*
+- **Task Section**: A section representing actionable work with status, priority, and assignee *(v0.3)*
+- **Task Reference**: Inline reference to a task section using `{{task:id}}` syntax *(v0.3)*
 
 ---
 
@@ -179,6 +182,8 @@ Each section represents a distinct portion of the document, owned by a specific 
 | `agent_name` | string | No | Human-readable agent name |
 | `position` | integer | No | Display order (0-indexed, default: insertion order) |
 | `created_at` | ISO 8601 | Yes | When section was created |
+| `type` | string | No | Section type (see 2.5.1) *(v0.3)* |
+| `status` | string | No | Approval status (see 2.5.3) *(v0.3)* |
 | `updated_at` | ISO 8601 | Yes | When section was last modified |
 | `version` | integer | No | Section version number |
 
@@ -208,6 +213,94 @@ Each section represents a distinct portion of the document, owned by a specific 
   }
 ]
 ```
+
+##### 2.5.1 Section Types *(v0.3)*
+
+Sections MAY have a `type` field indicating their semantic purpose.
+
+| Type | Description |
+|------|-------------|
+| `overview` | High-level summary or context |
+| `research` | Research findings, competitive analysis, data gathering |
+| `spec` | Product specification, requirements, design doc |
+| `roadmap` | Prioritized feature list, timeline, milestones |
+| `task` | Actionable work item (see 2.5.2) |
+| `decision` | Decision record, rationale, outcome |
+
+Implementations MAY define additional types using the `x-` prefix (e.g., `x-custom/mytype`).
+
+##### 2.5.2 Task Sections *(v0.3)*
+
+Sections with `type: "task"` represent actionable work items and support additional fields:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `task_status` | string | No | `pending`, `in_progress`, `blocked`, `done` |
+| `priority` | integer | No | 1=high, 2=medium, 3=low |
+| `assignee_agent_id` | string | No | Agent responsible for execution |
+| `source_section_id` | string | No | Section ID where task originated |
+| `started_at` | ISO 8601 | No | When work began |
+| `completed_at` | ISO 8601 | No | When work finished |
+| `output_url` | string | No | URL to deliverable (PR, doc, deployment) |
+| `output_type` | string | No | `pr`, `doc`, `artifact`, `deployment` |
+
+**Task section example:**
+
+```json
+{
+  "id": "task-rsvp-tracking",
+  "type": "task",
+  "heading": "Implement RSVP Tracking",
+  "content": "## Requirements\n- Track invited/confirmed/declined...",
+  "agent_id": "product-manager",
+  "task_status": "in_progress",
+  "priority": 2,
+  "assignee_agent_id": "engineering-agent",
+  "source_section_id": "roadmap",
+  "started_at": "2026-02-18T10:00:00Z",
+  "created_at": "2026-02-17T14:00:00Z",
+  "updated_at": "2026-02-19T09:30:00Z"
+}
+```
+
+##### 2.5.3 Section Approval Workflow *(v0.3)*
+
+Sections MAY require human approval. These fields track the approval process:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `status` | string | No | `draft`, `needs_approval`, `approved`, `needs_changes` |
+| `approval_requested_at` | ISO 8601 | No | When approval was requested |
+| `approval_requested_by` | string | No | Agent that requested approval |
+| `approval_note` | string | No | Message explaining what needs review |
+| `decided_at` | ISO 8601 | No | When decision was made |
+| `decided_by` | string | No | Who decided (agent_id or "human") |
+| `decision_note` | string | No | Feedback or rationale |
+
+**Workflow:**
+1. Agent creates section with `status: "draft"`
+2. Agent sets `status: "needs_approval"` with `approval_note`
+3. Human sets `status: "approved"` or `status: "needs_changes"` with `decision_note`
+
+##### 2.5.4 Task References *(v0.3)*
+
+Content MAY reference task sections using this syntax:
+
+**Same-artifact:** `{{task:<section_id>}}`
+
+**Cross-artifact:** `{{task:<artifact_id>:<section_id>}}`
+
+**Example:**
+```markdown
+## Tier 2 Features
+{{task:task-rsvp-tracking}}
+{{task:task-realtime-collab}}
+
+## Dependencies
+{{task:aah_infra_001:task-auth-system}}
+```
+
+Implementations SHOULD render references showing task heading and status. Invalid references SHOULD render as plain text or "not found" indicator.
 
 #### 2.6 `section_update` (CONDITIONAL) *(v0.2)*
 
@@ -497,6 +590,14 @@ To assist UI rendering, artifacts MAY include rendering hints in extensions:
 
 ## Backward Compatibility
 
+### v0.2 → v0.3
+
+- All v0.2 artifacts remain valid
+- `section.type` is optional; untyped sections behave as before
+- Task fields only apply when `type: "task"`
+- Approval fields are optional on all sections
+- `{{task:id}}` references are plain text in non-aware implementations
+
 ### v0.1 → v0.2
 
 - All v0.1 artifacts remain valid
@@ -507,7 +608,11 @@ To assist UI rendering, artifacts MAY include rendering hints in extensions:
 
 Detection logic:
 ```python
-if "sections" in envelope or "section_update" in envelope:
+if section.get("type") == "task":
+    # Task section with extended fields (v0.3)
+elif section.get("status") in ["needs_approval", "approved", "needs_changes"]:
+    # Section with approval workflow (v0.3)
+elif "sections" in envelope or "section_update" in envelope:
     # Sectioned artifact (v0.2)
 elif "content" in envelope:
     # Simple artifact (v0.1 compatible)
@@ -524,12 +629,19 @@ The following are under consideration for future versions:
 - **Relationships**: Richer artifact relationship types (derives-from, supersedes, relates-to)
 - **Schemas registry**: Central registry for structured artifact schemas
 - **Reactions/Comments**: Human feedback on artifacts
-- **Section types**: Typed sections (markdown, table, checklist, code)
 - **Concurrent editing**: Conflict resolution for simultaneous section updates
+- **Task dependencies**: Formal dependency graph between tasks
 
 ---
 
 ## Changelog
+
+### v0.3.0 (2026-02-19)
+
+- Added `section.type` field for semantic categorization (overview, research, spec, roadmap, task, decision)
+- Added task section fields: task_status, priority, assignee_agent_id, source_section_id, started_at, completed_at, output_url, output_type
+- Added task reference syntax: `{{task:<section_id>}}` and `{{task:<artifact_id>:<section_id>}}`
+- Added section approval workflow: status, approval_requested_at, approval_requested_by, approval_note, decided_at, decided_by, decision_note
 
 ### v0.2.0 (2026-02-18)
 
