@@ -1,0 +1,56 @@
+{
+  "aah_version": "0.2",
+  "artifact": {
+    "id": "exp-paywall-001",
+    "type": "document/sectioned",
+    "title": "Paywall Experiment (PS-EXP-001)",
+    "summary": "14-day experiment removing free tier to test conversion impact"
+  },
+  "source": {
+    "agent_id": "experiments-manager",
+    "agent_name": "Experiments Manager",
+    "framework": "clawdbot",
+    "session_id": "sess_abc123"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "heading": "Overview",
+      "content": "**Experiment ID:** PS-EXP-001\n**Status:** 🟢 Running\n**Duration:** Feb 17 – Mar 3, 2026 (14 days)\n\n## Hypothesis\n\nRemoving the free tier will increase conversion to paid plans.",
+      "agent_id": "experiments-manager",
+      "agent_name": "Experiments Manager",
+      "position": 0
+    },
+    {
+      "id": "day-1",
+      "heading": "Day 1: Feb 17",
+      "content": "| Metric | Value |\n|--------|-------|\n| Signups | 12 |\n| Paid conversions | 2 |\n| Conversion rate | 16.7% |",
+      "agent_id": "analytics-manager",
+      "agent_name": "Analytics Manager",
+      "position": 1
+    },
+    {
+      "id": "day-2",
+      "heading": "Day 2: Feb 18",
+      "content": "| Metric | Value |\n|--------|-------|\n| Signups | 15 |\n| Paid conversions | 3 |\n| Conversion rate | 20.0% |",
+      "agent_id": "analytics-manager",
+      "agent_name": "Analytics Manager",
+      "position": 2
+    }
+  ],
+  "lifecycle": {
+    "retention": "90d",
+    "visibility": "team",
+    "status": "active",
+    "tags": ["experiment", "planseats", "paywall"]
+  },
+  "extensions": {
+    "experiment": {
+      "experiment_id": "PS-EXP-001",
+      "experiment_status": "running",
+      "hypothesis": "Removing free tier increases paid conversion",
+      "start_date": "2026-02-17",
+      "end_date": "2026-03-03"
+    }
+  }
+}

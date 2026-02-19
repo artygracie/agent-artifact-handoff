@@ -2,7 +2,7 @@
 
 **A standard format for artifacts produced by AI agents.**
 
-[![Version](https://img.shields.io/badge/version-0.1.0--draft-blue)](./SPEC.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-blue)](./SPEC.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 ---
@@ -29,20 +29,18 @@ AAH defines a minimal, extensible envelope format for agent artifacts that enabl
 
 ## Quick Example
 
+**Simple artifact:**
 ```json
 {
-  "aah_version": "0.1",
+  "aah_version": "0.2",
   "artifact": {
     "id": "aah_abc123",
     "type": "document/markdown",
-    "title": "Competitor Analysis",
-    "created_at": "2026-02-12T10:30:00Z"
+    "title": "Competitor Analysis"
   },
   "source": {
     "agent_id": "research-agent",
-    "framework": "crewai",
-    "session_id": "ses_xyz",
-    "task_id": "TASK-456"
+    "framework": "crewai"
   },
   "content": {
     "media_type": "text/markdown",
@@ -52,6 +50,35 @@ AAH defines a minimal, extensible envelope format for agent artifacts that enabl
     "retention": "30d",
     "visibility": "team"
   }
+}
+```
+
+**Sectioned artifact (v0.2):**
+```json
+{
+  "aah_version": "0.2",
+  "artifact": {
+    "id": "exp-001",
+    "type": "document/sectioned",
+    "title": "Paywall Experiment"
+  },
+  "source": { "agent_id": "experiments-manager" },
+  "sections": [
+    {
+      "id": "overview",
+      "heading": "Overview",
+      "content": "14-day experiment...",
+      "agent_id": "experiments-manager",
+      "position": 0
+    },
+    {
+      "id": "day-1",
+      "heading": "Day 1",
+      "content": "| Signups | 12 |",
+      "agent_id": "analytics-manager",
+      "position": 1
+    }
+  ]
 }
 ```
 
@@ -70,10 +97,16 @@ Key sections:
 
 See the [`examples/`](./examples) directory for complete AAH envelopes:
 
+**Basic artifacts (v0.1):**
 - [Research document](./examples/document.json)
 - [Code artifact](./examples/code.json)
 - [Artifact with lineage](./examples/with-lineage.json)
 - [Ephemeral scratch artifact](./examples/ephemeral.json)
+
+**Sectioned artifacts (v0.2):**
+- [Multi-day experiment](./examples/sectioned-experiment.json) — 14-day experiment with daily sections
+- [Implementation plan](./examples/sectioned-implementation.json) — Phased implementation with multiple agents
+- [Section update](./examples/section-update.json) — Partial update to add/modify a section
 
 ## JSON Schema
 
@@ -119,7 +152,7 @@ AAH follows semantic versioning:
 - **0.x.x** — Draft/experimental (breaking changes allowed)
 - **1.0.0** — Stable (backwards-compatible changes only)
 
-Current version: **0.1.0-draft**
+Current version: **0.2.0**
 
 See [CHANGELOG.md](./CHANGELOG.md) for version history.
 

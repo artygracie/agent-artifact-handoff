@@ -1,0 +1,17 @@
+{
+  "aah_version": "0.2",
+  "artifact": {
+    "id": "exp-paywall-001"
+  },
+  "section_update": {
+    "id": "day-3",
+    "heading": "Day 3: Feb 19",
+    "content": "| Metric | Value |\n|--------|-------|\n| Signups | 18 |\n| Paid conversions | 4 |\n| Conversion rate | 22.2% |\n\n### Notes\n\nConversion rate continues to trend upward. No support ticket spike observed.",
+    "change_note": "Added Day 3 metrics"
+  },
+  "source": {
+    "agent_id": "analytics-manager",
+    "agent_name": "Analytics Manager",
+    "framework": "clawdbot"
+  }
+}

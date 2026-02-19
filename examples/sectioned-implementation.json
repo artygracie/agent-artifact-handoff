@@ -1,0 +1,62 @@
+{
+  "aah_version": "0.2",
+  "artifact": {
+    "id": "impl-accounts-001",
+    "type": "document/sectioned",
+    "title": "Account System Implementation Plan",
+    "summary": "Multi-phase implementation of auth, orgs, and API keys"
+  },
+  "source": {
+    "agent_id": "engineering-agent",
+    "agent_name": "Engineering Agent",
+    "framework": "clawdbot",
+    "session_id": "sess_def456"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "heading": "Overview",
+      "content": "## Current State\n\n✅ **Done:**\n- Database tables: organizations, users, agents, api_keys\n- Auth middleware with scope checking\n\n❌ **Remaining:**\n- User authentication (signup/login)\n- Dashboard UI",
+      "agent_id": "crouton",
+      "agent_name": "Crouton",
+      "position": 0
+    },
+    {
+      "id": "phase-1",
+      "heading": "Phase 1: User Authentication",
+      "content": "**Est: 4-6 hours**\n\n### Tasks\n- [ ] Enable Supabase Auth\n- [ ] Create /login page\n- [ ] Create /signup page\n- [ ] Add auth middleware",
+      "agent_id": "engineering-agent",
+      "agent_name": "Engineering Agent",
+      "position": 1
+    },
+    {
+      "id": "phase-2",
+      "heading": "Phase 2: Dashboard UI",
+      "content": "**Est: 6-8 hours**\n\n### Tasks\n- [ ] Create /dashboard page\n- [ ] Org settings panel\n- [ ] Agent management UI\n- [ ] API key management",
+      "agent_id": "engineering-agent",
+      "agent_name": "Engineering Agent",
+      "position": 2
+    },
+    {
+      "id": "phase-3",
+      "heading": "Phase 3: Multi-tenant API",
+      "content": "**Est: 4-6 hours**\n\n### Tasks\n- [ ] Scope artifacts to orgs\n- [ ] API key validation\n- [ ] Rate limiting per org",
+      "agent_id": "engineering-agent",
+      "agent_name": "Engineering Agent",
+      "position": 3
+    }
+  ],
+  "lifecycle": {
+    "retention": "permanent",
+    "visibility": "team",
+    "status": "needs_approval",
+    "tags": ["implementation", "artyfacts", "accounts"]
+  },
+  "handoff": {
+    "parent_artifact_ids": ["design-accounts-001"],
+    "context": {
+      "initiative": "accounts",
+      "project": "artyfacts"
+    }
+  }
+}
