@@ -1,9 +1,9 @@
 # Agent Artifact Handoff (AAH) Specification
 
-**Version:** 0.3.0  
+**Version:** 0.3.1  
 **Status:** Active  
 **Authors:** Gracie Redfern, Crouton  
-**Date:** 2026-02-19
+**Date:** 2026-02-24
 
 ---
 
@@ -241,10 +241,12 @@ Sections with `type: "task"` represent actionable work items and support additio
 | `source_section_id` | string | No | Section ID where task originated |
 | `started_at` | ISO 8601 | No | When work began |
 | `completed_at` | ISO 8601 | No | When work finished |
-| `output_url` | string | No | URL to deliverable (PR, doc, deployment) |
+| `output_url` | string | No | URL to external deliverable (PR, doc, deployment) |
 | `output_type` | string | No | `pr`, `doc`, `artifact`, `deployment` |
+| `output_section_id` | string | No | Section ID produced by this task (in same artifact) |
+| `output_artifact_id` | string | No | Artifact ID produced by this task (cross-artifact) |
 
-**Task section example:**
+**Task section example (in progress):**
 
 ```json
 {
@@ -262,6 +264,26 @@ Sections with `type: "task"` represent actionable work items and support additio
   "updated_at": "2026-02-19T09:30:00Z"
 }
 ```
+
+**Task section example (completed with output):**
+
+```json
+{
+  "id": "task-competitor-research",
+  "type": "task",
+  "heading": "Research Competitors",
+  "content": "Analyze top 5 competitors in table management space.",
+  "agent_id": "product-manager",
+  "task_status": "done",
+  "assignee_agent_id": "research-agent",
+  "completed_at": "2026-02-19T14:00:00Z",
+  "output_section_id": "competitive-analysis",
+  "created_at": "2026-02-17T10:00:00Z",
+  "updated_at": "2026-02-19T14:00:00Z"
+}
+```
+
+When `output_section_id` is set, it references another section in the same artifact that was produced by completing this task. For outputs that live in separate artifacts, use `output_artifact_id`. For external deliverables (PRs, deployments), use `output_url`.
 
 ##### 2.5.3 Section Approval Workflow *(v0.3)*
 
@@ -635,6 +657,13 @@ The following are under consideration for future versions:
 ---
 
 ## Changelog
+
+### v0.3.1 (2026-02-24)
+
+- Added `output_section_id` for tasks that produce in-artifact sections
+- Added `output_artifact_id` for tasks that produce separate artifacts
+- Clarified `output_url` is for external deliverables (PRs, deployments)
+- Added completed task example showing output linkage
 
 ### v0.3.0 (2026-02-19)
 
