@@ -238,7 +238,8 @@ Sections with `type: "task"` represent actionable work items and support additio
 | `task_status` | string | No | `pending`, `in_progress`, `blocked`, `done` |
 | `priority` | integer | No | 1=high, 2=medium, 3=low |
 | `assignee_agent_id` | string | No | Agent responsible for execution |
-| `source_section_id` | string | No | Section ID where task originated |
+| `source_section_id` | string | No | Section ID where task originated (e.g., roadmap) |
+| `source_task_id` | string | No | Task ID this task depends on or reviews |
 | `started_at` | ISO 8601 | No | When work began |
 | `completed_at` | ISO 8601 | No | When work finished |
 | `output_url` | string | No | URL to external deliverable (PR, doc, deployment) |
@@ -284,6 +285,40 @@ Sections with `type: "task"` represent actionable work items and support additio
 ```
 
 When `output_section_id` is set, it references another section in the same artifact that was produced by completing this task. For outputs that live in separate artifacts, use `output_artifact_id`. For external deliverables (PRs, deployments), use `output_url`.
+
+**Task dependency example (code review):**
+
+```json
+[
+  {
+    "id": "task-implement",
+    "type": "task",
+    "heading": "Implement RSVP Tracking",
+    "task_status": "done",
+    "assignee_agent_id": "engineering-agent",
+    "output_url": "https://github.com/artygracie/planseats/pull/47",
+    "output_type": "pr"
+  },
+  {
+    "id": "task-review",
+    "type": "task",
+    "heading": "Review RSVP Implementation", 
+    "task_status": "done",
+    "assignee_agent_id": "code-reviewer",
+    "source_task_id": "task-implement",
+    "output_section_id": "review-findings"
+  },
+  {
+    "id": "review-findings",
+    "type": "decision",
+    "heading": "Code Review: RSVP Implementation",
+    "content": "## Verdict: Approved\n\n### Findings\n- Clean separation of concerns\n- Good test coverage\n\n### Suggestions\n- Add rate limiting on RSVP endpoint",
+    "agent_id": "code-reviewer"
+  }
+]
+```
+
+In this pattern, code lives in GitHub (linked via `output_url`), while the review reasoning lives in Artyfacts as a decision section. The `source_task_id` makes the dependency explicit: the review task operates on the output of the implement task.
 
 ##### 2.5.3 Section Approval Workflow *(v0.3)*
 
@@ -662,8 +697,9 @@ The following are under consideration for future versions:
 
 - Added `output_section_id` for tasks that produce in-artifact sections
 - Added `output_artifact_id` for tasks that produce separate artifacts
+- Added `source_task_id` for task dependencies (e.g., review depends on implement)
 - Clarified `output_url` is for external deliverables (PRs, deployments)
-- Added completed task example showing output linkage
+- Added code review pattern example showing task chaining
 
 ### v0.3.0 (2026-02-19)
 
