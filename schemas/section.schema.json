@@ -2,15 +2,15 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://aah.spec/schemas/section.schema.json",
   "title": "AAH Section",
-  "description": "A section within a sectioned artifact",
+  "description": "A section within an AAH artifact (v0.5)",
   "type": "object",
-  "required": ["id", "heading", "content", "agent_id", "created_at", "updated_at"],
+  "required": ["id", "heading", "type", "agent_id", "created_at", "updated_at"],
   "properties": {
     "id": {
       "type": "string",
-      "description": "Stable section identifier (e.g., 'baseline', 'day-1')",
+      "description": "Stable section identifier (e.g., 'overview', 'api-schema')",
       "pattern": "^[a-z0-9][a-z0-9-]*$",
-      "examples": ["overview", "baseline", "rollback", "day-1"]
+      "examples": ["main", "overview", "api-schema", "day-1"]
     },
     "heading": {
       "type": "string",
@@ -18,13 +18,48 @@
       "minLength": 1,
       "maxLength": 200
     },
-    "content": {
+    "type": {
       "type": "string",
-      "description": "Markdown content of the section"
+      "description": "Content type in category/subtype format",
+      "pattern": "^[a-z]+/[a-z0-9-]+$",
+      "examples": ["document/markdown", "code/typescript", "data/csv", "image/png"]
+    },
+    "body": {
+      "type": ["string", "object"],
+      "description": "Inline content. String for text/code/data, object for structured/json."
+    },
+    "body_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to fetch content (for large or binary content)"
+    },
+    "media_type": {
+      "type": "string",
+      "description": "MIME type override (derived from type if omitted)"
+    },
+    "encoding": {
+      "type": "string",
+      "default": "utf-8",
+      "description": "Character encoding"
+    },
+    "body_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "SHA-256 hash of content"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Content size in bytes"
+    },
+    "token_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Estimated token count for LLM context budgeting"
     },
     "agent_id": {
       "type": "string",
-      "description": "Identifier of the agent that owns/created this section"
+      "description": "Identifier of the agent that owns this section"
     },
     "agent_name": {
       "type": "string",
@@ -52,5 +87,9 @@
       "minimum": 1,
       "default": 1
     }
-  }
+  },
+  "anyOf": [
+    { "required": ["body"] },
+    { "required": ["body_url"] }
+  ]
 }

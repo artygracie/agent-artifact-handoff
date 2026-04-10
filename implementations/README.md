@@ -4,20 +4,20 @@
 
 ### Artyfacts
 
-**[artyfacts.dev](https://artyfacts.dev)** — Cloud storage + viewer for agent artifacts
+**[artyfacts.dev](https://artyfacts.dev)** — The GitHub for agent work that's not code
 
 - Full AAH envelope support
 - Artifact lineage visualization
 - Session/task grouping
 - Shareable links
+- MCP-native — agents interact via [`@artyfacts/mcp-server`](https://github.com/artygracie/artyfacts/tree/main/packages/mcp-server)
 - Built by [Artygroup](https://artygroup.co)
 
-## Official SDKs
+## MCP Server
 
-| SDK | Language | Status | Repository |
-|-----|----------|--------|------------|
-| @artyfacts/sdk | TypeScript | Planned | — |
-| artyfacts-python | Python | Planned | — |
+| Package | Status | Repository |
+|---------|--------|------------|
+| `@artyfacts/mcp-server` | Active | [GitHub](https://github.com/artygracie/artyfacts/tree/main/packages/mcp-server) |
 
 ## Framework Integrations
 
@@ -46,6 +46,6 @@ Built something with AAH? We'd love to list it!
    - Current status
 
 Requirements:
-- Must implement AAH v0.1 envelope format
+- Must implement AAH v0.5 envelope format
 - Should validate against the JSON schema
 - Ideally open source (but not required)

@@ -1,41 +1,48 @@
 {
-  "aah_version": "0.2",
+  "aah_version": "0.5",
   "artifact": {
     "id": "exp-paywall-001",
-    "type": "document/sectioned",
+    "type": "experiment",
     "title": "Paywall Experiment (PS-EXP-001)",
-    "summary": "14-day experiment removing free tier to test conversion impact"
-  },
-  "source": {
-    "agent_id": "experiments-manager",
-    "agent_name": "Experiments Manager",
-    "framework": "clawdbot",
-    "session_id": "sess_abc123"
+    "summary": "14-day experiment removing free tier to test conversion impact",
+    "created_at": "2026-02-17T08:00:00Z"
   },
   "sections": [
     {
       "id": "overview",
       "heading": "Overview",
-      "content": "**Experiment ID:** PS-EXP-001\n**Status:** 🟢 Running\n**Duration:** Feb 17 – Mar 3, 2026 (14 days)\n\n## Hypothesis\n\nRemoving the free tier will increase conversion to paid plans.",
+      "type": "document/markdown",
+      "body": "**Experiment ID:** PS-EXP-001\n**Status:** Running\n**Duration:** Feb 17 \u2013 Mar 3, 2026 (14 days)\n\n## Hypothesis\n\nRemoving the free tier will increase conversion to paid plans.",
       "agent_id": "experiments-manager",
       "agent_name": "Experiments Manager",
-      "position": 0
+      "position": 0,
+      "created_at": "2026-02-17T08:00:00Z",
+      "updated_at": "2026-02-17T08:00:00Z",
+      "version": 1
     },
     {
       "id": "day-1",
       "heading": "Day 1: Feb 17",
-      "content": "| Metric | Value |\n|--------|-------|\n| Signups | 12 |\n| Paid conversions | 2 |\n| Conversion rate | 16.7% |",
+      "type": "data/csv",
+      "body": "Metric,Value\nSignups,12\nPaid conversions,2\nConversion rate,16.7%",
       "agent_id": "analytics-manager",
       "agent_name": "Analytics Manager",
-      "position": 1
+      "position": 1,
+      "created_at": "2026-02-17T23:59:00Z",
+      "updated_at": "2026-02-17T23:59:00Z",
+      "version": 1
     },
     {
       "id": "day-2",
       "heading": "Day 2: Feb 18",
-      "content": "| Metric | Value |\n|--------|-------|\n| Signups | 15 |\n| Paid conversions | 3 |\n| Conversion rate | 20.0% |",
+      "type": "data/csv",
+      "body": "Metric,Value\nSignups,15\nPaid conversions,3\nConversion rate,20.0%",
       "agent_id": "analytics-manager",
       "agent_name": "Analytics Manager",
-      "position": 2
+      "position": 2,
+      "created_at": "2026-02-18T23:59:00Z",
+      "updated_at": "2026-02-18T23:59:00Z",
+      "version": 1
     }
   ],
   "lifecycle": {

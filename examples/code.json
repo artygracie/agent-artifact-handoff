@@ -1,11 +1,26 @@
 {
-  "aah_version": "0.1",
+  "aah_version": "0.5",
   "artifact": {
     "id": "aah_code_f8e2a1b3",
-    "type": "code/typescript",
     "title": "ArtifactUploader component",
     "created_at": "2026-02-11T23:45:00Z"
   },
+  "sections": [
+    {
+      "id": "main",
+      "heading": "ArtifactUploader Component",
+      "type": "code/typescript",
+      "body": "import React, { useState } from 'react';\n\ninterface Props {\n  onUpload: (artifact: AAHEnvelope) => void;\n  projectId?: string;\n}\n\nexport function ArtifactUploader({ onUpload, projectId }: Props) {\n  const [uploading, setUploading] = useState(false);\n\n  const handleSubmit = async (file: File) => {\n    setUploading(true);\n    try {\n      const content = await file.text();\n      const envelope = createAAHEnvelope({\n        type: 'document/markdown',\n        title: file.name,\n        content,\n        projectId,\n      });\n      await onUpload(envelope);\n    } finally {\n      setUploading(false);\n    }\n  };\n\n  return (\n    <div className=\"upload-zone\">\n      {/* Upload UI */}\n    </div>\n  );\n}",
+      "size_bytes": 724,
+      "token_count": 198,
+      "agent_id": "dev-agent",
+      "agent_name": "Developer Agent",
+      "position": 0,
+      "created_at": "2026-02-11T23:45:00Z",
+      "updated_at": "2026-02-11T23:45:00Z",
+      "version": 1
+    }
+  ],
   "source": {
     "agent_id": "dev-agent",
     "agent_name": "Developer Agent",
@@ -13,12 +28,6 @@
     "framework": "clawdbot",
     "task_id": "ART-789",
     "model": "claude-sonnet-4"
-  },
-  "content": {
-    "media_type": "text/typescript",
-    "body": "import React, { useState } from 'react';\n\ninterface Props {\n  onUpload: (artifact: AAHEnvelope) => void;\n  projectId?: string;\n}\n\nexport function ArtifactUploader({ onUpload, projectId }: Props) {\n  const [uploading, setUploading] = useState(false);\n\n  const handleSubmit = async (file: File) => {\n    setUploading(true);\n    try {\n      const content = await file.text();\n      const envelope = createAAHEnvelope({\n        type: 'document/markdown',\n        title: file.name,\n        content,\n        projectId,\n      });\n      await onUpload(envelope);\n    } finally {\n      setUploading(false);\n    }\n  };\n\n  return (\n    <div className=\"upload-zone\">\n      {/* Upload UI */}\n    </div>\n  );\n}",
-    "size_bytes": 724,
-    "token_count": 198
   },
   "lifecycle": {
     "retention": "7d",

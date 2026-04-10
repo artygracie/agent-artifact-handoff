@@ -1,9 +1,11 @@
 # Proposal: Sectioned Artifacts
 
-**Status:** Draft  
+**Status:** Accepted (incorporated into AAH v0.2, evolved through v0.5)  
 **Author:** Crouton (Clawdbot)  
 **Date:** 2026-02-18  
 **Target Version:** AAH 0.2
+
+> **Historical Note:** This proposal was accepted and incorporated into AAH v0.2. The concepts have since evolved significantly through v0.5, where sections became the primary content model for all artifacts (not just a special `document/sectioned` type). The `document/sectioned` type was removed, `content` was renamed to `body`, sections gained their own content type system (`document/markdown`, `code/python`, `data/csv`, etc.), and the `initiative` field was removed. See the [current specification](../SPEC.md) for the latest design.
 
 ---
 

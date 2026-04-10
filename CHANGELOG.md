@@ -5,13 +5,37 @@ All notable changes to the AAH specification will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-- Nothing yet
+## [0.5.0] - 2026-04-10
 
 ### Changed
-- Nothing yet
+- **Breaking**: Artifacts are now containers for sections; artifact-level `content` field removed
+- **Breaking**: `sections` is required on all artifacts (single-section for simple content)
+- **Breaking**: Section `content` field renamed to `body`; sections gain `body_url`, `media_type`, `encoding`, `body_hash`, `size_bytes`, `token_count`
+- Artifact `type` is now optional; simplified to purpose-based categories: `document`, `spec`, `research`, `analysis`, `plan`, `design`, `proposal`, `review`, `decision`, `report`, `experiment`, `feature`, `guide`, `log`
+- Section `type` now uses content type taxonomy: `document/*`, `code/*`, `data/*`, `image/*`, `structured/*`
+- `source` is now optional on the envelope; section `agent_id` is the primary provenance mechanism
+- `section_update` gains `agent_id` field; `body` is now conditional (either `body` or `body_url`)
+
+### Removed
+- `artifact.initiative` field (use `lifecycle.tags` for grouping)
+- `document/sectioned` artifact type (all artifacts contain sections)
+- Simple vs. sectioned artifact distinction
+
+## [0.4.0] - 2026-04-10
+
+### Removed
+- Task sections and all task-specific fields (`task_status`, `priority`, `assignee_agent_id`, etc.)
+- Section approval workflow
+- Task reference syntax (`{{task:id}}`)
+
+### Changed
+- Retained `section.type` for semantic categorization (without `task` type)
+
+## [0.3.0] - 2026-02-19
+
+### Added
+- `section.type` field for semantic categorization
+- Task sections, approval workflow, task references (removed in v0.4)
 
 ## [0.2.0] - 2026-02-18
 
@@ -24,7 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Section-level version history
 - **Initiative Grouping**
   - New `artifact.initiative` field for grouping related artifacts
-  - Enables `client.initiative()` SDK pattern
 - **New Artifact Types**
   - `structured/experiment` — Experiment tracking documents
   - `structured/feature` — Feature development tracking
@@ -33,12 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Spec version bumped to `0.2.0`
-- `lifecycle.status` values expanded: added `active`, `needs_approval`
-- Added backward compatibility section
-- Added example artifacts appendix
-
-### Proposals Accepted
-- `proposals/SECTIONED-ARTIFACTS.md` — Full sectioned artifacts proposal
+- `lifecycle.status` values expanded: added `active`
 
 ## [0.1.0-draft] - 2026-02-11
 
@@ -52,14 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Versioning fields (`version`, `version_id`, `previous_version_id`)
 - Content deduplication support via `body_hash`
 - **HITL Decisions Extension** (`proposals/HITL-DECISIONS.md`)
-  - Decision types: `approval`, `choice`, `multi_choice`, `text`, `number`, `date`
-  - Per-decision approve/reject with comments
-  - Deadline and escalation support
-
-### Security
-- Defined authentication/authorization recommendations
-- Content validation guidelines
-- Secrets handling policy
 
 ---
 
@@ -67,5 +77,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Status |
 |---------|------|--------|
-| 0.2.0 | 2026-02-18 | **Current** |
+| 0.5.0 | 2026-04-10 | **Current** |
+| 0.4.0 | 2026-04-10 | Superseded |
+| 0.3.0 | 2026-02-19 | Superseded |
+| 0.2.0 | 2026-02-18 | Superseded |
 | 0.1.0-draft | 2026-02-11 | Superseded |

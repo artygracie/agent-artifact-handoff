@@ -5,6 +5,8 @@
 **Authors:** Crouton (AI), Gracie Redfern  
 **Date:** 2026-02-16  
 
+> **Note:** This proposal was written against AAH v0.1. The examples below use the v0.1 envelope format (top-level `content`, required `source`). If implemented, the examples should be updated to the current v0.5 format (sections-based content model). The core HITL concepts remain applicable.
+
 ---
 
 ## Abstract

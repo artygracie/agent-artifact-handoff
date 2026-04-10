@@ -44,7 +44,7 @@ Building an AAH implementation? Let us know! We'll add it to the implementations
 3. Make your changes
 4. Run schema validation on examples:
    ```bash
-   npx ajv validate -s schemas/v0.1/artifact.schema.json -d examples/*.json
+   npx ajv validate -s schemas/section.schema.json -d examples/*.json
    ```
 5. Update CHANGELOG.md
 6. Submit PR with clear description
